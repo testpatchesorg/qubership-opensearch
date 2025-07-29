@@ -163,7 +163,7 @@ global:
     create: false
 
   disasterRecovery:
-    image: ghcr.io/netcracker/disaster-recovery-daemon:main
+    image: ghcr.io/netcracker/qubership-disaster-recovery-daemon:main
     tls:
       enabled: false
       certificates:
