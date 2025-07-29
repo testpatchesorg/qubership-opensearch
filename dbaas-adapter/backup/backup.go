@@ -433,8 +433,8 @@ func (bp BackupProvider) CollectBackup(dbs []string, ctx context.Context) (strin
 			quotedDbs[i] = fmt.Sprintf(`"%s"`, db)
 		}
 		body = strings.NewReader(fmt.Sprintf(`
-		{	
-			"allow_eviction":"False",	
+		{
+			"allow_eviction":"False",
 			"dbs": [%s]
 		}`, strings.Join(quotedDbs, ",")))
 	}
@@ -695,11 +695,15 @@ func (bp BackupProvider) checkPrefixUniqueness(prefix string, ctx context.Contex
 		for element, user := range users {
 			if strings.HasPrefix(element, prefix) {
 				logger.ErrorContext(ctx, fmt.Sprintf("provided prefix already exists or a part of another prefix: %+v", prefix))
-				return false, fmt.Errorf("provided prefix already exists or a part of another prefix: %+v", prefix)
+				if common.CheckPrefixesUniqueEnabled {
+					return false, fmt.Errorf("provided prefix already exists or a part of another prefix: %+v", prefix)
+				}
 			}
 			if user.Attributes[resourcePrefixAttributeName] != "" && strings.HasPrefix(user.Attributes[resourcePrefixAttributeName], prefix) {
 				logger.ErrorContext(ctx, fmt.Sprintf("provided prefix already exists or a part of another prefix: %+v", prefix))
-				return false, fmt.Errorf("provided prefix already exists or a part of another prefix: %+v", prefix)
+				if common.CheckPrefixesUniqueEnabled {
+					return false, fmt.Errorf("provided prefix already exists or a part of another prefix: %+v", prefix)
+				}
 			}
 		}
 	} else if response.StatusCode == http.StatusNotFound {
@@ -751,10 +755,10 @@ func (bp BackupProvider) requestRestore(ctx context.Context, dbs []string, backu
 	body := strings.NewReader(fmt.Sprintf(`
 		{
 			"vault": "%s",
-			"skip_users_recovery": "true",		
+			"skip_users_recovery": "true",
 			"dbs": ["%s"]
 		%s
-		}		
+		}
 		`, backupId, strings.Join(dbs, ","), namesRegenerateRequestPart(pattern, replacement)))
 	url := fmt.Sprintf("%s/%s", bp.Curator.url, "restore")
 	request := bp.prepareRestoreRequest(ctx, url, body)
@@ -788,7 +792,7 @@ func (bp BackupProvider) requestRestoration(ctx context.Context, dbs []string, b
 			"skip_users_recovery": "true",
 			"dbs": [%s]
 		%s
-		}		
+		}
 		`, backupId, strings.Join(dbs, ","), prepareChangeNameRequestPart(replacement)))
 	url := fmt.Sprintf("%s/%s", bp.Curator.url, "restore")
 	request := bp.prepareRestoreRequest(ctx, url, body)
