@@ -111,7 +111,7 @@ spec:
                   key: password
             {{- end }}
             - name: CHECK_PREFIXES_UNIQUE_ENABLED
-              value: "{{ .Values.dbaasAdapter.prefixUniqueEnabled | quote }}"
+              value: "{{ .Values.dbaasAdapter.prefixUniqueEnabled }}"
           image: {{ template "dbaas-adapter.image" . }}
           imagePullPolicy: {{ .Values.dbaasAdapter.imagePullPolicy | default "Always" | quote }}
           livenessProbe:
