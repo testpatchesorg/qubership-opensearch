@@ -1,4 +1,4 @@
-FROM python:3.10.18-alpine3.22
+FROM python:3.13-alpine3.22
 
 ENV ELASTICSEARCH_INDICES_CLEANER_HOME=/opt/elasticsearch-indices-cleaner
 
@@ -10,9 +10,9 @@ COPY scripts/indices_cleaner_tests.py ${ELASTICSEARCH_INDICES_CLEANER_HOME}/indi
 # Return back 5.8.1 version for 'elasticsearch-curator' in requirements when 'botocore' version is compatible with 5.8.1 version of 'elasticsearch-curator'
 RUN set -x \
     && apk add --upgrade build-base apk-tools \
-    && pip3 install --upgrade pip==22.1.2 setuptools==70.0.0 \
+    && pip3 install --upgrade pip setuptools \
     && pip3 install -r ${ELASTICSEARCH_INDICES_CLEANER_HOME}/requirements.txt \
-    && pip3 install --upgrade urllib3==1.26.17 \
+    && pip3 install --upgrade urllib3 \
     && rm -rf /var/cache/apk/*
 
 # Upgrade all tools to avoid vulnerabilities

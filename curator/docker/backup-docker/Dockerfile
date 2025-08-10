@@ -10,7 +10,7 @@ COPY docker/backup-docker/docker-entrypoint.sh /docker-entrypoint.sh
 
 RUN set -x \
     && pip3 install -U opensearch-py==2.5.0 elasticsearch==7.13.0 curator-opensearch==0.0.12 \
-    && pip3 install --upgrade urllib3==1.26.18 click==8.0.3 \
+    && pip3 install --upgrade urllib3 click \
     && rm -rf /var/cache/apk/*
 
 #Download jq
