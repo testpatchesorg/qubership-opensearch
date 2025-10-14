@@ -37,7 +37,7 @@ on:
       only-fixed:
         description: "Show only fixable vulnerabilities"
         required: false
-        default: false
+        default: true
         type: boolean
 permissions:
   contents: read
