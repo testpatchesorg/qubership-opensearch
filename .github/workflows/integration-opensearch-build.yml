@@ -34,7 +34,7 @@ env:
   OPENSEARCH_CUSTOM_IMAGE: ${{ github.event.client_payload.custom_opensearch_version }}
   OPENSEARCH_VERSION: ${{ github.event.client_payload.opensearch_tag }}
   REPLACE_SYMBOL: ${{ github.event.client_payload.replace-symbol || '_'}}
-  DOCKER_CONFIG_FILE: ".github/docker-build-config.cfg"
+  DOCKER_CONFIG_FILE: ".qubership/docker-build-config.cfg"
 
 jobs:
   prepare:
@@ -140,3 +140,4 @@ jobs:
           build-args: ${{ env.CUSTOM_BASE_IMAGE_ARG }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
