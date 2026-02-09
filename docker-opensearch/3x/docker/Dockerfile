@@ -16,8 +16,8 @@ COPY 3x/docker/docker-entrypoint.sh /
 # Install the tools we need
 RUN yum update --assumeyes --skip-broken \
     && yum install -y jq-1.7.1 \
-    && yum clean all \
-    && rm -rf /var/cache/yum/*
+    && yum clean all
+RUN rm -rf /var/cache/yum/* || true
 
 RUN echo "Download OpenSearch plugins..." \
 && curl --create-dirs -s "https://artifacts.opensearch.org/releases/plugins/repository-s3/3.4.0/repository-s3-3.4.0.zip" \
